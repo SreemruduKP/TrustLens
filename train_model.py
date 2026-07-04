@@ -5,11 +5,11 @@ from sklearn.metrics import accuracy_score, precision_score, recall_score, f1_sc
 import joblib
 
 # Load clean dataset
-df = pd.read_csv("data/clean_phishing.csv")
+df = pd.read_csv("data/my_phishing_dataset.csv")
 
 # Separate features and target
-X = df.drop(columns=["Result"])  # all columns except Result
-y = df["Result"]                  # only Result column
+X = df.drop(columns=["Result"]).values  # all columns except Result
+y = df["Result"].values               # only Result column
 
 # Train test split
 X_train, X_test, y_train, y_test = train_test_split(
@@ -33,14 +33,6 @@ print("Recall:", recall_score(y_test, y_pred))
 print("F1 Score:", f1_score(y_test, y_pred))
 print("\nConfusion Matrix:")
 print(confusion_matrix(y_test, y_pred))
-
-# Feature importance
-print("\nTop 10 Important Features:")
-importances = pd.Series(
-    model.feature_importances_,
-    index=X.columns
-).sort_values(ascending=False)
-print(importances.head(10))
 
 # Save model
 joblib.dump(model, "model.pkl")
